@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">test1</string>
+
+    <string-array name="frequency_options">
+        <item>Minutes</item>
+        <item>Hours</item>
+        <item>Days</item>
+    </string-array>
+</resources>
