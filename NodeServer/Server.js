@@ -7,7 +7,8 @@
 --
 -- REVISIONS: 
 -- Version 1.0 - [EY] - 2016/Mar/23 - Created simple server 
-
+-- Version 1.0 - [EY] - 2016/Mar/26 - Created server-db writes 
+--
 -- DESIGNER: Eva Yu
 --
 -- PROGRAMMER: Eva Yu
@@ -17,29 +18,41 @@
 -- and store all the data in a json file
 ------------------------------------------------------------------------------*/
 const net = require('net');
-const dir   = __dirname + '/data';
-const logf  = 'log.json';
-const path  = dir + '/' + logf;
-
-var fs = require('fs');
+var mysql      = require('mysql');
 const port = 7424;
 
-//create data directory
-if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-}
+/****** ONLY FOR FILE WRITES *******/
+//var fs = require('fs');
+// const dir   = __dirname + '/data';
+// const logf  = 'log.json';
+// const path  = dir + '/' + logf;
 
-//create a log file if it does not exist
-fs.open(path, 'wx', (err, fd) => {
-	if (err) {
-		if (err.code === "EEXIST") {
-			console.error('Log file found: ' + path);
-		  	return;
-		} else {
-			throw err;
-		}
-		console.error('Log file created: ' + path);
-	}
+
+// //create data directory
+// if (!fs.existsSync(dir)) {
+//     fs.mkdirSync(dir);
+// }
+
+// //create a log file if it does not exist
+// fs.open(path, 'wx', (err, fd) => {
+// 	if (err) {
+// 		if (err.code === "EEXIST") {
+// 			console.error('Log file found: ' + path);
+// 		  	return;
+// 		} else {
+// 			throw err;
+// 		}
+// 		console.error('Log file created: ' + path);
+// 	}
+// });
+/****** ONLY FOR FILE END*******/
+
+/************* WRITE QUERY ****************/
+const insertQuery = 'INSERT INTO gps_entry_test SET ?';
+
+/*************** CONNECT DB ******************/
+var db = mysql.createConnection({
+  host     : 'localhost'
 });
 
 /************* SERVER START ****************/
@@ -52,14 +65,43 @@ const server = net.createServer( (cSock) => {
 	});
   
 	//if client sends data, append to log file
-	cSock.on('data', function(inBuff) {  
+	cSock.on('data', function(jsondata) {  
+		/*		
 		fs.appendFile(path, inBuff, function(err) {
 			if(err) {
 				return console.log(err);
 			}
 		}); 
-	});
+		*/
 
+		// connect to database
+		db.connect(function(err) {
+			if (err) {
+				console.error('Error connecting to DB: ' + err.stack);
+		    	return;
+		  	}
+		  	console.log('DB connected.');
+		});
+
+		//write data to Db
+		db.query(insertQuery, jsondata, function (err, res, fields){
+			
+			if (err) {
+				console.error('Error writing to db: ' + err.stack);
+		    	return;
+		  	}
+		  	console.log('Inserted new entry, id: '+ res.insertId);
+		});
+		// connect log the query and close connection
+		console.log(query.sql);
+		db.end(function(err) {
+			if (err) {
+				console.error('error closing DB: ' + err.stack);
+		    	return;
+		  	}
+		  	console.log('DB closed.');
+		});
+	});
 });
 
 //if server encounters error
