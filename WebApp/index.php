@@ -1,43 +1,3 @@
-<?php
-/**
- * These are the database login details
- */  
-define("HOST", "localhost");     // The host you want to connect to.
-define("USER", "root");    // The database username. 
-define("PASSWORD", "root");    // The database password. 
-define("DATABASE", "androidgps_db");    // The database name.
- 
-define("CAN_REGISTER", "any");
-define("DEFAULT_ROLE", "member");
- 
-define("SECURE", FALSE);    // FOR DEVELOPMENT ONLY!!!!
-?>
-
-<?php
-$mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
-?>
-
-<?php
-$stmt = $mysqli->prepare("SELECT _id, mac, username, longitude, latitude, time
-                          FROM gps_entry;");
-$stmt->execute();
-$stmt->store_result();
-if (!$stmt->num_rows) {
-    header('Location: index.html');
-    return;
-}
-
-for ($i = 0; $i < $stmt->num_rows; $i++)
-{
-    $stmt->bind_result($id, $mac, $username, $long, $lat, $time); 
-    $res = $stmt->fetch();
-
-    echo '<p>' . $id . $mac . $username . $long. $lat . $time . '</p>';
-}
-?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -92,7 +52,7 @@ for ($i = 0; $i < $stmt->num_rows; $i++)
             </div>
 
             <!--logo start-->
-            <a href="index.html" class="logo">Nice <span class="lite">Admin</span></a>
+            <a href="index.php" class="logo">Nice <span class="lite">Admin</span></a>
             <!--logo end-->
 
             <div class="nav search-row" id="top_menu">
@@ -354,13 +314,13 @@ for ($i = 0; $i < $stmt->num_rows; $i++)
               <!-- sidebar menu start-->
               <ul class="sidebar-menu">                
                   <li class="active">
-                      <a class="" href="index.html">
+                      <a class="" href="index.php">
                           <i class="icon_house_alt"></i>
                           <span>Dashboard</span>
                       </a>
                   </li>     
                   <li class="sub-menu">
-                      <a href="map.html" class="">
+                      <a href="map.php" class="">
                           <i class="icon_documents_alt"></i>
                           <span>Map</span>
                           <span class="menu-arrow arrow_carrot-right"></span>
@@ -380,7 +340,7 @@ for ($i = 0; $i < $stmt->num_rows; $i++)
 				<div class="col-lg-12">
 					<h3 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h3>
 					<ol class="breadcrumb">
-						<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+						<li><i class="fa fa-home"></i><a href="index.php">Home</a></li>
 						<li><i class="fa fa-laptop"></i>Dashboard</li>						  	
 					</ol>
 				</div>
@@ -429,9 +389,9 @@ for ($i = 0; $i < $stmt->num_rows; $i++)
 						<div class="panel-heading">
 							<h2><i class="fa fa-map-marker red"></i><strong>Countries</strong></h2>
 							<div class="panel-actions">
-								<a href="index.html#" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
-								<a href="index.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
-								<a href="index.html#" class="btn-close"><i class="fa fa-times"></i></a>
+								<a href="index.php#" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
+								<a href="index.php#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="index.php#" class="btn-close"><i class="fa fa-times"></i></a>
 							</div>	
 						</div>
 						<div class="panel-body-map">
@@ -484,9 +444,9 @@ for ($i = 0; $i < $stmt->num_rows; $i++)
 						<div class="panel-heading">
 							<h2><i class="fa fa-flag-o red"></i><strong>Registered Users</strong></h2>
 							<div class="panel-actions">
-								<a href="index.html#" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
-								<a href="index.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
-								<a href="index.html#" class="btn-close"><i class="fa fa-times"></i></a>
+								<a href="index.php#" class="btn-setting"><i class="fa fa-rotate-right"></i></a>
+								<a href="index.php#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="index.php#" class="btn-close"><i class="fa fa-times"></i></a>
 							</div>
 						</div>
 						<div class="panel-body">

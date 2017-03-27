@@ -4,7 +4,7 @@
  */  
 define("HOST", "localhost");     // The host you want to connect to.
 define("USER", "root");    // The database username. 
-define("PASSWORD", "root");    // The database password. 
+define("PASSWORD", "");    // The database password. 
 define("DATABASE", "androidgps_db");    // The database name.
  
 define("CAN_REGISTER", "any");
@@ -15,25 +15,6 @@ define("SECURE", FALSE);    // FOR DEVELOPMENT ONLY!!!!
 
 <?php
 $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
-?>
-
-<?php
-$stmt = $mysqli->prepare("SELECT _id, mac, username, longitude, latitude, time
-                          FROM gps_entry;");
-$stmt->execute();
-$stmt->store_result();
-if (!$stmt->num_rows) {
-    header('Location: index.html');
-    return;
-}
-
-for ($i = 0; $i < $stmt->num_rows; $i++)
-{
-    $stmt->bind_result($id, $mac, $username, $long, $lat, $time); 
-    $res = $stmt->fetch();
-
-    echo '<p>' . $id . $mac . $username . $long. $lat . $time . '</p>';
-}
 ?>
 
 <!DOCTYPE html>
@@ -79,7 +60,7 @@ for ($i = 0; $i < $stmt->num_rows; $i++)
             </div>
 
             <!--logo start-->
-            <a href="index.html" class="logo">Nice <span class="lite">Admin</span></a>
+            <a href="index.php" class="logo">Nice <span class="lite">Admin</span></a>
             <!--logo end-->
 
             <div class="nav search-row" id="top_menu">
@@ -342,7 +323,7 @@ for ($i = 0; $i < $stmt->num_rows; $i++)
               <!-- sidebar menu start-->
               <ul class="sidebar-menu">                
                   <li class="active">
-                      <a class="" href="index.html">
+                      <a class="" href="index.php">
                           <i class="icon_house_alt"></i>
                           <span>Dashboard</span>
                       </a>
@@ -367,7 +348,7 @@ for ($i = 0; $i < $stmt->num_rows; $i++)
                 <div class="col-lg-12">
                     <h3 class="page-header"><i class="fa fa fa-map-marker"></i> Map </h3>
                     <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+                        <li><i class="fa fa-home"></i><a href="index.php">Home</a></li>
                         <li><i class="fa fa-bars"></i>Pages</li>
                         <li><i class="fa fa-square-o"></i>Pages</li>
                     </ol>
@@ -398,6 +379,7 @@ for ($i = 0; $i < $stmt->num_rows; $i++)
             </div>
         </div>
   </section>
+
   <!-- container section end -->
     <!-- javascripts -->
     <script src="js/jquery.js"></script>
@@ -406,10 +388,36 @@ for ($i = 0; $i < $stmt->num_rows; $i++)
     <script src="js/jquery.scrollTo.min.js"></script>
     <script src="js/jquery.nicescroll.js" type="text/javascript"></script><!--custome script for all page-->
     <script src="js/scripts.js"></script>
-    <script src="js/4985-a3-map.js"></script>
+    <script src="js/4985-a3-map.js?version=2"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbxUUTtdQNzjjsLsHEs9n5HayYdCQ6-uY&callback=initMap">
     </script>
 
   </body>
 </html>
+
+<script type="text/javascript">
+function testFunc() {
+    alert('called');
+}
+</script>
+
+<?php
+$stmt = $mysqli->prepare("SELECT _id, mac, username, longitude, latitude, time
+                          FROM gps_entry;");
+$stmt->execute();
+$stmt->store_result();
+if (!$stmt->num_rows) {
+    header('Location: index.php');
+    return;
+}
+
+for ($i = 0; $i < $stmt->num_rows; $i++)
+{
+    $stmt->bind_result($id, $mac, $username, $long, $lat, $time); 
+    $res = $stmt->fetch();
+
+    //echo '<script type="text/javascript">testFunc();</script>';
+    echo '<script type="text/javascript">addMap("'.$mac.'", '.$id.', '.$long.', '.$lat.', "'.$time.'");</script>';
+}
+?>
