@@ -59,12 +59,14 @@ var pinColors = ['http://maps.google.com/mapfiles/ms/icons/pink-dot.png'
     });
   }
 
+  /*
   addMap(0, 0, 49.254908, -122.913864, 'clnt0-id0');
   addMap(0, 1, 50.254908, -122.913864, 'clnt0-id1');
   addMap(1, 0, 51.254908, -121.913864, 'clnt1-id0');
   addMap(1, 1, 51.254908, -120.913864, 'clnt1-id1');
   addMap(2, 0, 52.354908, -119.813864, 'clnt2-id0');
   addMap(2, 1, 52.454908, -120.713864, 'clnt2-id1');
+  */
 
 /**
   Author: Jamie Lee.

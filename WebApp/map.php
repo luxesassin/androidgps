@@ -388,7 +388,7 @@ $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
     <script src="js/jquery.scrollTo.min.js"></script>
     <script src="js/jquery.nicescroll.js" type="text/javascript"></script><!--custome script for all page-->
     <script src="js/scripts.js"></script>
-    <script src="js/4985-a3-map.js?version=2"></script>
+    <script src="js/4985-a3-map.js?version=3"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbxUUTtdQNzjjsLsHEs9n5HayYdCQ6-uY&callback=initMap">
     </script>
