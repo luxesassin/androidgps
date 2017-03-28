@@ -93,7 +93,7 @@ const server = net.createServer( (cSock) => {
 			}
 		}); 
 		*/
-		/*
+		
 		var sendMapData = '';
 		sendMapData += jsondata['mac'];
 		sendMapData += ';';
@@ -103,7 +103,6 @@ const server = net.createServer( (cSock) => {
 		sendMapData += ';';
 		sendMapData += jsondata['latitude'];
 		io.emit('mapData', sendMapData); // Jamie
-		*/
 
 		// connect to database
 		db.connect(function(err) {

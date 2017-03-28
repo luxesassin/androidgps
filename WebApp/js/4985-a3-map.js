@@ -6,7 +6,7 @@ var pinColors = ['http://maps.google.com/mapfiles/ms/icons/pink-dot.png'
 ,'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
 ,'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
 ,'http://maps.google.com/mapfiles/ms/icons/ltblue-dot.png'
-                ,'http://maps.google.com/mapfiles/ms/icons/orange-dot.png']; // all pin colours.
+,'http://maps.google.com/mapfiles/ms/icons/orange-dot.png']; // all pin colours.
 
 /**
   Author: Jamie Lee.
@@ -99,6 +99,25 @@ function showLocation(clientId, lat, lng, title) {
     // TODO: Do something when the marker is clicked.
     alert('clicked: position-' + marker.position + ', title-' + marker.title);
   });
+
+  console.log(clientId);
+  var clientDataMap = dataManger.get(clientId);
+  var coords = [];
+  clientDataMap.forEach(function (value, key, mapObj) {
+    var latlng = new google.maps.LatLng(Number(value.get('lat')), Number(value.get('lgn')));
+    coords.push({lat: Number(value.get('lat')), lng: Number(value.get('lgn'))});
+  });
+  console.log(coords.length);
+
+  var path = new google.maps.Polyline({
+          path: coords,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+
+  path.setMap(map);
 }
 
 /**

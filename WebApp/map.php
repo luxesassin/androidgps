@@ -388,7 +388,7 @@ $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
     <script src="js/jquery.scrollTo.min.js"></script>
     <script src="js/jquery.nicescroll.js" type="text/javascript"></script><!--custome script for all page-->
     <script src="js/scripts.js"></script>
-    <script src="js/4985-a3-map.js?version=8"></script>
+    <script src="js/4985-a3-map.js?version=1.9"></script>
     <script src="js/socket.io.js"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbxUUTtdQNzjjsLsHEs9n5HayYdCQ6-uY&callback=initMap">
@@ -421,11 +421,11 @@ mysqli_close($mysqli);
 ?>
 
 <script type="text/javascript">
+var curMapId = <?php echo $mapId; ?>;
 var socket = io.connect('http://localhost:8181');
 socket.on('mapData', function(message) {
     var words = message.split(';');
-    console.log(words);
-    addMap(words[0], <?php echo $mapId++; ?>, Number(words[2]), Number(words[3]), words[1]);
+    addMap(words[0], curMapId++, Number(words[2]), Number(words[3]), words[1]);
     showLocation(words[0], Number(words[2]), Number(words[3]), words[1]);
 });
 </script>
