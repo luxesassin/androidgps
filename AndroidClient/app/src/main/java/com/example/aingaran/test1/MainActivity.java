@@ -1,40 +1,99 @@
 package com.example.aingaran.test1;
 
+import android.Manifest;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.NetworkInterface;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
+/*------------------------------------------------------------------------------------------------
+-- SOURCE FILE: MainActivity.java
+--
+-- PROGRAM:     COMP4985_Assignment_3 - Android GPS
+--
+-- FUNCTIONS:
+--
+-- DATE:        March 24, 2017
+--
+-- DESIGNER:    Aing Ragunathan and Michael Goll
+--
+-- PROGRAMMER:  Aing Ragunathan and Michael Goll
+--
+-- NOTES:
+--------------------------------------------------------------------------------------------------*/
 
 
 public class MainActivity extends AppCompatActivity {
-
+    TextView macInput;
     EditText frequencyNumberEditText;
     Spinner frequencyTypeSpinner;
     String frequencyTypeInput;
 
-
+    /*-----------------------------------------------------------------------------------------------
+    -- FUNCTION:   onCreate
+    --
+    -- DATE:       March 24, 2017
+    --
+    -- DESIGNER:   Aing Ragunathan
+    --
+    -- PROGRAMMER: Aing Ragunathan
+    --
+    -- INTERFACE:  onCreate(Bundle savedInstanceState)
+    --
+    -- PARAMETER:  Bundle savedInstanceState
+    --
+    -- RETURNS:    void
+    --
+    -- NOTES:
+    ----------------------------------------------------------------------------------------------- */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //default frequencyNumber
+        ActivityCompat.requestPermissions(this,new
+                String[]{Manifest.permission.ACCESS_WIFI_STATE },1);
+
+        ActivityCompat.requestPermissions(this,new
+                String[]{Manifest.permission.ACCESS_FINE_LOCATION },1);
+                //String[]{Manifest.permission.ACCESS_COARSE_LOCATION},1);
+
+
+
+        //set the mac address
+        macInput = (TextView) findViewById(R.id.macInput);
+        macInput.setText(getMacAddr());
+
+        //set default frequencyNumber
         frequencyNumberEditText = (EditText) findViewById(R.id.frequencyNumberEditText);
 
-        //default frequencyType
+        //set default frequencyType
         frequencyTypeInput = "hour";
         frequencyTypeSpinner = (Spinner) findViewById(R.id.frequencyTypeSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -56,6 +115,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*-----------------------------------------------------------------------------------------------
+    -- FUNCTION:
+    --
+    -- DATE:       March 24, 2017
+    --
+    -- DESIGNER:   Aing Ragunathan
+    --
+    -- PROGRAMMER: Aing Ragunathan
+    --
+    -- INTERFACE:
+    --
+    -- PARAMETER:
+    --
+    -- RETURNS:    void
+    --
+    -- NOTES:
+    ----------------------------------------------------------------------------------------------- */
     public void ConnectButton(final View view){
         int frequency  = Integer.parseInt(frequencyNumberEditText.getText().toString());
 
@@ -84,47 +160,80 @@ public class MainActivity extends AppCompatActivity {
             //send packet every [frequency] seconds
         }
 
+        /*-----------------------------------------------------------------------------------------------
+        -- FUNCTION:
+        --
+        -- DATE:       March 24, 2017
+        --
+        -- DESIGNER:   Aing Ragunathan
+        --
+        -- PROGRAMMER: Aing Ragunathan
+        --
+        -- INTERFACE:
+        --
+        -- PARAMETER:
+        --
+        -- RETURNS:    void
+        --
+        -- NOTES:
+        ----------------------------------------------------------------------------------------------- */
         @Override
         public void run(){
             try
             {
-                String ClientString;
+                double longitude = 0;
+                double latitude = 0;
+
 
                 // Connect to the server
                 System.out.println ("Connecting to " + IP + " on port " + PORT);
-                //Toast.makeText(this, "Connecting to " + IP+ " on port " + PORT, Toast.LENGTH_LONG).show();
 
-
-
-
-                Socket client = new Socket (IP, PORT);
+                Socket client = new Socket (IP, PORT);  //create a socket for sending
                 System.out.println ("Successful connection to: " + client.getRemoteSocketAddress());
-                //Toast.makeText(this, "Successful connection to: " + client.getRemoteSocketAddress(), Toast.LENGTH_LONG).show();
+
+
+                int permissionCheck;
+                permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION );
+
+                if(permissionCheck == PERMISSION_GRANTED) {
+                    LocationManager lm = (LocationManager) MainActivity.this.getSystemService(MainActivity.this.LOCATION_SERVICE);
+                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (location != null) {
+                        longitude = location.getLongitude();
+                        latitude = location.getLatitude();
+                    }
+                }
+                else{
+                    longitude = 46.1;
+                    latitude = 46.1;
+                }
+
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date();
+
 
                 // Get console input
                 //BufferedReader input = new BufferedReader (new InputStreamReader(System.in));
                 //ClientString = "hello server!";
-                String jsonMsg = new JSONObject()
-                        .put("macId", 1)
-                        .put("uName", "aing")
-                        .put("timeInterval", 1)
-                        .put("latitude", 1)
-                        .put("longitude", 2).toString();
+                JSONObject jsonObject = new JSONObject()
+                        .put("mac", "1")
+                        .put("username", "aing")
+                        .put("latitude", latitude)
+                        .put("longitude", longitude)
+                        .put("time", dateFormat.format(date));//dateFormat.format(date));
+                String jsonMsg = jsonObject.toString();
+                Log.d("JSON output: ", jsonMsg);
+
 
 
                 // Send client string to server
                 OutputStream outToServer = client.getOutputStream();
                 DataOutputStream out = new DataOutputStream (outToServer);
                 //out.writeUTF(ClientString + client.getLocalSocketAddress());
-                out.writeUTF(jsonMsg+ client.getLocalSocketAddress());
+                out.writeBytes(jsonMsg);//, 0, jsonMsg.length());//+ client.getLocalSocketAddress());
                 InputStream inFromServer = client.getInputStream();
 
-                // Get the echo from server
-                DataInputStream in = new DataInputStream (inFromServer);
-                System.out.println("Server Echo: " + in.readUTF());
-                //Toast.makeText(this, "Server Echo: " + in.readUTF(), Toast.LENGTH_LONG).show();
-
-                client.close();
+                client.close(); //close the connection after object is sent
             }
 
             catch(IOException e)
@@ -134,5 +243,31 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static String getMacAddr() {
+        try {
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif : all) {
+                if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return "";
+                }
+
+                StringBuilder res1 = new StringBuilder();
+                for (byte b : macBytes) {
+                    res1.append(Integer.toHexString(b & 0xFF) + ":");
+                }
+
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                return res1.toString();
+            }
+        } catch (Exception ex) {
+        }
+        return "02:00:00:00:00:00";
     }
 }
