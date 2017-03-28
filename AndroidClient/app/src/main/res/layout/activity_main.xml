@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.aingaran.test1.MainActivity">
 
-    <Button
-        android:id="@+id/connectButton"
+    <TextView
+        android:id="@+id/macInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Connect"
-        tools:layout_editor_absoluteX="147dp"
-        tools:layout_editor_absoluteY="354dp"
-        android:onClick="ConnectButton"/>
+        android:text="MACINPUT"
+        android:layout_above="@+id/textView3"
+        android:layout_alignLeft="@+id/ipInput"
+        android:layout_alignStart="@+id/ipInput" />
+
+    <EditText
+        android:id="@+id/portInput"
+        android:layout_width="119dp"
+        android:layout_height="46dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="7424"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="91dp"
+        android:layout_below="@+id/ipInput"
+        android:layout_alignLeft="@+id/ipInput"
+        android:layout_alignStart="@+id/ipInput" />
 
     <EditText
         android:id="@+id/frequencyNumberEditText"
@@ -23,7 +37,46 @@
         android:inputType="textPersonName"
         android:text="1"
         tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="91dp"
+        android:layout_alignTop="@+id/textView"
+        android:layout_alignLeft="@+id/portInput"
+        android:layout_alignStart="@+id/portInput" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Server IP:"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/usernameInput"
+        android:layout_alignLeft="@+id/textView10"
+        android:layout_alignStart="@+id/textView10" />
+
+    <EditText
+        android:id="@+id/ipInput"
+        android:layout_width="150dp"
+        android:layout_height="46dp"
+        android:layout_alignBaseline="@+id/textView11"
+        android:layout_alignBottom="@+id/textView11"
+        android:layout_toRightOf="@+id/connectButton"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="159.203.12.137"
+        tools:layout_editor_absoluteX="85dp"
         tools:layout_editor_absoluteY="91dp" />
+
+    <Button
+        android:id="@+id/connectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect"
+        tools:layout_editor_absoluteX="147dp"
+        tools:layout_editor_absoluteY="354dp"
+        android:onClick="ConnectButton"
+        android:layout_marginBottom="107dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView" />
 
     <TextView
         android:id="@+id/textView"
@@ -31,13 +84,99 @@
         android:layout_height="wrap_content"
         android:text="Interval"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="104dp" />
+        tools:layout_editor_absoluteY="104dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginStart="22dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Spinner
         android:id="@+id/frequencyTypeSpinner"
         android:layout_width="122dp"
         android:layout_height="45dp"
         tools:layout_editor_absoluteX="223dp"
-        tools:layout_editor_absoluteY="91dp" />
+        tools:layout_editor_absoluteY="91dp"
+        android:layout_alignBottom="@+id/frequencyNumberEditText"
+        android:layout_toRightOf="@+id/frequencyNumberEditText"
+        android:layout_toEndOf="@+id/frequencyNumberEditText" />
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="MAC"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/textView11"
+        android:layout_alignStart="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Long:"
+        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_alignBottom="@+id/longText" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:text="Lat:" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Server Port:"
+        android:layout_alignBaseline="@+id/portInput"
+        android:layout_alignBottom="@+id/portInput"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView" />
+
+    <TextView
+        android:id="@+id/longInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/macInput"
+        android:layout_alignStart="@+id/macInput"
+        android:layout_below="@+id/macInput"
+        android:text="LONGINPUT" />
+
+    <TextView
+        android:id="@+id/latInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LATINPUT"
+        android:layout_below="@+id/longInput"
+        android:layout_alignLeft="@+id/longInput"
+        android:layout_alignStart="@+id/longInput" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username:"
+        android:layout_alignBaseline="@+id/usernameInput"
+        android:layout_alignBottom="@+id/usernameInput"
+        android:layout_alignLeft="@+id/textView4"
+        android:layout_alignStart="@+id/textView4" />
+
+    <EditText
+        android:id="@+id/usernameInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/latInput"
+        android:layout_alignStart="@+id/latInput"
+        android:layout_below="@+id/latInput"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+
+</RelativeLayout>
