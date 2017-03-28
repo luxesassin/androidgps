@@ -13,11 +13,11 @@
         android:layout_height="wrap_content"
         android:text="MACINPUT"
         android:layout_above="@+id/textView3"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignStart="@+id/editText" />
+        android:layout_alignLeft="@+id/ipInput"
+        android:layout_alignStart="@+id/ipInput" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/portInput"
         android:layout_width="119dp"
         android:layout_height="46dp"
         android:ems="10"
@@ -25,9 +25,9 @@
         android:text="7424"
         tools:layout_editor_absoluteX="85dp"
         tools:layout_editor_absoluteY="91dp"
-        android:layout_below="@+id/editText"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignStart="@+id/editText" />
+        android:layout_below="@+id/ipInput"
+        android:layout_alignLeft="@+id/ipInput"
+        android:layout_alignStart="@+id/ipInput" />
 
     <EditText
         android:id="@+id/frequencyNumberEditText"
@@ -39,21 +39,21 @@
         tools:layout_editor_absoluteX="85dp"
         tools:layout_editor_absoluteY="91dp"
         android:layout_alignTop="@+id/textView"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_alignStart="@+id/editText2" />
+        android:layout_alignLeft="@+id/portInput"
+        android:layout_alignStart="@+id/portInput" />
 
     <TextView
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="47dp"
         android:text="Server IP:"
-        android:layout_below="@+id/textView4"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/usernameInput"
         android:layout_alignLeft="@+id/textView10"
         android:layout_alignStart="@+id/textView10" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/ipInput"
         android:layout_width="150dp"
         android:layout_height="46dp"
         android:layout_alignBaseline="@+id/textView11"
@@ -88,8 +88,8 @@
         android:layout_marginLeft="22dp"
         android:layout_marginStart="22dp"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/latText"
-        android:layout_toEndOf="@+id/latText" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Spinner
         android:id="@+id/frequencyTypeSpinner"
@@ -135,8 +135,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Server Port:"
-        android:layout_alignBaseline="@+id/editText2"
-        android:layout_alignBottom="@+id/editText2"
+        android:layout_alignBaseline="@+id/portInput"
+        android:layout_alignBottom="@+id/portInput"
         android:layout_alignLeft="@+id/textView"
         android:layout_alignStart="@+id/textView" />
 
@@ -153,9 +153,30 @@
         android:id="@+id/latInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView11"
+        android:text="LATINPUT"
+        android:layout_below="@+id/longInput"
         android:layout_alignLeft="@+id/longInput"
-        android:layout_alignStart="@+id/longInput"
-        android:text="LATINPUT" />
+        android:layout_alignStart="@+id/longInput" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username:"
+        android:layout_alignBaseline="@+id/usernameInput"
+        android:layout_alignBottom="@+id/usernameInput"
+        android:layout_alignLeft="@+id/textView4"
+        android:layout_alignStart="@+id/textView4" />
+
+    <EditText
+        android:id="@+id/usernameInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/latInput"
+        android:layout_alignStart="@+id/latInput"
+        android:layout_below="@+id/latInput"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
 
 </RelativeLayout>
