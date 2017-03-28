@@ -47,6 +47,26 @@ const port = 7424;
 // });
 /****** ONLY FOR FILE END*******/
 
+/************* WEB APP SERVER ****************/
+var http = require('http');
+var fs = require('fs');
+
+// Loading the index file . html displayed to the client
+var webAppserver = http.createServer(function(req, res) {
+});
+
+// Loading socket.io
+var io = require('socket.io').listen(webAppserver);
+
+// When a client connects, we note it in the console
+io.sockets.on('connection', function (socket) {
+    console.log('Web app is connected!');
+});
+
+
+webAppserver.listen(8181);
+/************* WEB APP SERVER END ****************/
+
 /************* WRITE QUERY ****************/
 const insertQuery = 'INSERT INTO gps_entry_test SET ?';
 
@@ -73,6 +93,8 @@ const server = net.createServer( (cSock) => {
 			}
 		}); 
 		*/
+
+		io.emit('mapData', '00:25:96:FF:FE:12:34:01;eva-test;49.248914;-122.975282'); // Jamie
 
 		// connect to database
 		db.connect(function(err) {
