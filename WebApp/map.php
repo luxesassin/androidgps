@@ -4,7 +4,7 @@
  */  
 define("HOST", "localhost");     // The host you want to connect to.
 define("USER", "root");    // The database username. 
-define("PASSWORD", "");    // The database password. 
+define("PASSWORD", "root");    // The database password. 
 define("DATABASE", "androidgps_db");    // The database name.
  
 define("CAN_REGISTER", "any");
@@ -388,21 +388,16 @@ $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
     <script src="js/jquery.scrollTo.min.js"></script>
     <script src="js/jquery.nicescroll.js" type="text/javascript"></script><!--custome script for all page-->
     <script src="js/scripts.js"></script>
-    <script src="js/4985-a3-map.js?version=3"></script>
+    <script src="js/4985-a3-map.js?version=8"></script>
+    <script src="js/socket.io.js"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbxUUTtdQNzjjsLsHEs9n5HayYdCQ6-uY&callback=initMap">
     </script>
-
   </body>
 </html>
 
-<script type="text/javascript">
-function testFunc() {
-    alert('called');
-}
-</script>
-
 <?php
+$mapId = 0;
 $stmt = $mysqli->prepare("SELECT _id, mac, username, longitude, latitude, time
                           FROM gps_entry;");
 $stmt->execute();
@@ -419,5 +414,18 @@ for ($i = 0; $i < $stmt->num_rows; $i++)
 
     //echo '<script type="text/javascript">testFunc();</script>';
     echo '<script type="text/javascript">addMap("'.$mac.'", '.$id.', '.$long.', '.$lat.', "'.$time.'");</script>';
+    $mapId = $id;
 }
+
+mysqli_close($mysqli);
 ?>
+
+<script type="text/javascript">
+var socket = io.connect('http://localhost:8181');
+socket.on('mapData', function(message) {
+    var words = message.split(';');
+    console.log(words);
+    addMap(words[0], <?php echo $mapId++; ?>, Number(words[2]), Number(words[3]), words[1]);
+    showLocation(words[0], Number(words[2]), Number(words[3]), words[1]);
+});
+</script>

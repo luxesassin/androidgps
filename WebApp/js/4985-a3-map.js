@@ -16,9 +16,11 @@ var pinColors = ['http://maps.google.com/mapfiles/ms/icons/pink-dot.png'
   Purpose: Show all locations on the google map.
   */
   var pinColorIndex = 0;
+  var myOptions;
+  var map;
   function initMap() {
     var latlng = new google.maps.LatLng(49.254908, -122.913864);
-    var myOptions = {
+    myOptions = {
       zoom: 10,
       center: latlng,
       mapTypeControl: true,
@@ -27,9 +29,12 @@ var pinColors = ['http://maps.google.com/mapfiles/ms/icons/pink-dot.png'
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
-    var map = new google.maps.Map(document.getElementById('map'), myOptions);
+    map = new google.maps.Map(document.getElementById('map'), myOptions);
     dataManger.forEach(function (value, key, mapObj) {
+      var clientId = key;
       value.forEach(function (value, key, mapObj) {
+        showLocation(clientId, Number(value.get('lat')), Number(value.get('lgn')), value.get('title'));
+        /*
         var infowindow = new google.maps.InfoWindow({
           content: '<b>' + value.get('title') + '</b>',
           size: new google.maps.Size(150, 50)
@@ -54,19 +59,47 @@ var pinColors = ['http://maps.google.com/mapfiles/ms/icons/pink-dot.png'
         // TODO: Do something when the marker is clicked.
         alert('clicked: position-' + marker.position + ', title-' + marker.title);
       });
+*/
       });
       pinColorIndex++;
     });
   }
 
-  /*
-  addMap(0, 0, 49.254908, -122.913864, 'clnt0-id0');
-  addMap(0, 1, 50.254908, -122.913864, 'clnt0-id1');
-  addMap(1, 0, 51.254908, -121.913864, 'clnt1-id0');
-  addMap(1, 1, 51.254908, -120.913864, 'clnt1-id1');
-  addMap(2, 0, 52.354908, -119.813864, 'clnt2-id0');
-  addMap(2, 1, 52.454908, -120.713864, 'clnt2-id1');
-  */
+var pinMap = new Map();
+var pinIndex = -1;
+function showLocation(clientId, lat, lng, title) {
+  var pin = pinMap.get(clientId);
+    if (pin == null) {
+      pinIndex = ++pinIndex % pinColors.length;
+      pinMap.set(clientId, pinColors[pinIndex]);
+      pin = pinColors[pinIndex];
+    }
+
+    var infowindow = new google.maps.InfoWindow({
+      content: '<b>' + title + '</b>',
+      size: new google.maps.Size(150, 50)
+    });
+
+    var pos = new google.maps.LatLng(lat, lng);
+
+    var marker = new google.maps.Marker({
+      position: pos,
+      map: map,
+      title: title,
+      icon: pin
+    });
+
+    google.maps.event.addListener(marker, 'mouseover', function () {
+      infowindow.open(map, marker);
+    });
+    google.maps.event.addListener(marker, 'mouseout', function () {
+      infowindow.close(map, marker);
+    });
+    google.maps.event.addListener(marker, 'click', function () {
+    // TODO: Do something when the marker is clicked.
+    alert('clicked: position-' + marker.position + ', title-' + marker.title);
+  });
+}
 
 /**
   Author: Jamie Lee.

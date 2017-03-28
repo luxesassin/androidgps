@@ -93,8 +93,17 @@ const server = net.createServer( (cSock) => {
 			}
 		}); 
 		*/
-
-		io.emit('mapData', '00:25:96:FF:FE:12:34:01;eva-test;49.248914;-122.975282'); // Jamie
+		/*
+		var sendMapData = '';
+		sendMapData += jsondata['mac'];
+		sendMapData += ';';
+		sendMapData += jsondata['username'];
+		sendMapData += ';';
+		sendMapData += jsondata['longitude'];
+		sendMapData += ';';
+		sendMapData += jsondata['latitude'];
+		io.emit('mapData', sendMapData); // Jamie
+		*/
 
 		// connect to database
 		db.connect(function(err) {
